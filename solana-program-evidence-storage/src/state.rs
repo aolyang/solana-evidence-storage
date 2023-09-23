@@ -1,7 +1,5 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-use solana_program::program_pack::IsInitialized;
-use solana_program::program_pack::Sealed;
-
+use solana_program::program_pack::{IsInitialized, Sealed};
 
 #[derive(BorshSerialize, BorshDeserialize)]
 pub struct EvidenceAccountState {

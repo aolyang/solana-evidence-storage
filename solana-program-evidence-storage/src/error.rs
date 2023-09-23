@@ -1,5 +1,5 @@
-use solana_program::program_error::ProgramError;
 use thiserror::Error;
+use solana_program::program_error::ProgramError;
 
 #[derive(Error, Debug)]
 pub enum Error {

@@ -1,4 +1,3 @@
-use std::borrow::Borrow;
 use crate::error::Error;
 use crate::state::EvidenceAccountState;
 use borsh::BorshSerialize;
@@ -14,8 +13,9 @@ use solana_program::{
     account_info::AccountInfo,
     entrypoint::ProgramResult,
     msg,
-    pubkey::Pubkey
+    pubkey::Pubkey,
 };
+
 
 pub fn add_evidence_stats(
     program_id: &Pubkey,
@@ -63,15 +63,17 @@ pub fn add_evidence_stats(
 
     // 计算所需资金
     let rent = &Rent::from_account_info(next_account_info(account_info_iter)?)?;
-    let required_lamports = rent.minimum_balance(total_len);
+    let rent_lamports = rent.minimum_balance(total_len);
 
     // 创建账户
     invoke_signed(
         &system_instruction::create_account(
             initializer.key,
             pda_account.key,
-            required_lamports,
-            total_len.try_into().map_err(|_| Error::ConvertUsizeToU64Failed)?,
+            rent_lamports,
+            total_len
+                .try_into()
+                .map_err(|_| Error::ConvertUsizeToU64Failed)?,
             program_id,
         ),
         &[initializer.clone(), pda_account.clone(), system_program.clone()],

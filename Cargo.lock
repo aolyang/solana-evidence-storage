@@ -1181,15 +1181,6 @@ dependencies = [
 
 [[package]]
 name = "solana-program"
-version = "0.1.0"
-dependencies = [
- "borsh 0.10.3",
- "solana-program 1.16.14",
- "thiserror",
-]
-
-[[package]]
-name = "solana-program"
 version = "1.16.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3a2faeb9c89b354b547a229e3b39fa8fd6d11c78362ba8580f0c4721739725b6"
@@ -1241,6 +1232,15 @@ dependencies = [
  "tiny-bip39",
  "wasm-bindgen",
  "zeroize",
+]
+
+[[package]]
+name = "solana-program-evidence-storage"
+version = "0.1.0"
+dependencies = [
+ "borsh 0.10.3",
+ "solana-program",
+ "thiserror",
 ]
 
 [[package]]
