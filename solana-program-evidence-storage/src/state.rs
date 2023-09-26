@@ -6,8 +6,14 @@ pub struct EvidenceAccountState {
     pub is_initialized: bool,
     pub file_name: String,
     pub description: String,
-    pub size: u64,
+    pub size: String,
     pub hash: String,
+}
+
+impl EvidenceAccountState {
+    pub fn get_account_size(file_name: String, description: String, size: String, hash: String) -> usize {
+        return 1 + (4 + file_name.len()) + (4 + description.len()) + (4 + size.len()) + (4 + hash.len());
+    }
 }
 
 impl Sealed for EvidenceAccountState {}

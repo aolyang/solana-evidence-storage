@@ -36,7 +36,7 @@ pub fn process_instruction(
         } => add_evidence_stats(program_id, accounts, file_name, description, size, hash),
         EvidenceInstruction::UpdateEvidenceStats {
             file_name,
-            description
-        } => update_evidence_info(program_id, accounts, file_name, description)
+            description,
+        } => update_evidence_info(program_id, accounts, file_name, description),
     }
 }

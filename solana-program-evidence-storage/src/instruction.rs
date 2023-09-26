@@ -1,24 +1,24 @@
 use borsh::{BorshDeserialize};
-use solana_program::{program_error::ProgramError};
+use solana_program::{msg, program_error::ProgramError};
 
 #[derive(BorshDeserialize)]
-struct EvidenceAddPayload {
+struct AddEvidenceStatsPayload {
     file_name: String,
     description: String,
-    size: u64,
+    size: String,
     hash: String,
 }
-
 #[derive(BorshDeserialize)]
-struct EvidenceUpdatePayload {
+struct UpdateEvidenceStatsPayload {
     file_name: String,
     description: String,
 }
+
 pub enum EvidenceInstruction {
     AddEvidenceStats {
         file_name: String,
         description: String,
-        size: u64,
+        size: String,
         hash: String,
     },
     UpdateEvidenceStats {
@@ -32,10 +32,11 @@ impl EvidenceInstruction {
         let (&variant, rest) = input
             .split_first()
             .ok_or(ProgramError::InvalidInstructionData)?;
+        msg!("variant: {}", variant);
 
         Ok(match variant {
             0 => {
-                let payload = EvidenceAddPayload::try_from_slice(rest)
+                let payload = AddEvidenceStatsPayload::try_from_slice(rest)
                     .map_err(|_| ProgramError::from(ProgramError::InvalidInstructionData))?;
                 Self::AddEvidenceStats {
                     file_name: payload.file_name,
@@ -45,7 +46,7 @@ impl EvidenceInstruction {
                 }
             }
             1 => {
-                let payload = EvidenceUpdatePayload::try_from_slice(rest)
+                let payload = UpdateEvidenceStatsPayload::try_from_slice(rest)
                     .map_err(|_| ProgramError::from(ProgramError::InvalidInstructionData))?;
                 Self::UpdateEvidenceStats {
                     file_name: payload.file_name,

@@ -10,10 +10,10 @@ pub enum Error {
     #[error("Derived PDA did not match the given PDA")]
     InvalidPDA,
     // error 2
-    #[error("input data length is too long")]
+    #[error("Input data length is too long")]
     InvalidDataLength,
     // error 3
-    #[error("rating is out of range 5 or less than 1")]
+    #[error("Invalid file size")]
     InvalidFileSize,
     #[error("Invalid Instruction")]
     InvalidInstruction,
