@@ -2,16 +2,11 @@ use borsh::{BorshDeserialize};
 use solana_program::{msg, program_error::ProgramError};
 
 #[derive(BorshDeserialize)]
-struct AddEvidenceStatsPayload {
+struct EvidenceStatsPayload {
     file_name: String,
     description: String,
     size: String,
     hash: String,
-}
-#[derive(BorshDeserialize)]
-struct UpdateEvidenceStatsPayload {
-    file_name: String,
-    description: String,
 }
 
 pub enum EvidenceInstruction {
@@ -36,7 +31,7 @@ impl EvidenceInstruction {
 
         Ok(match variant {
             0 => {
-                let payload = AddEvidenceStatsPayload::try_from_slice(rest)
+                let payload = EvidenceStatsPayload::try_from_slice(rest)
                     .map_err(|_| ProgramError::from(ProgramError::InvalidInstructionData))?;
                 Self::AddEvidenceStats {
                     file_name: payload.file_name,
@@ -46,7 +41,7 @@ impl EvidenceInstruction {
                 }
             }
             1 => {
-                let payload = UpdateEvidenceStatsPayload::try_from_slice(rest)
+                let payload = EvidenceStatsPayload::try_from_slice(rest)
                     .map_err(|_| ProgramError::from(ProgramError::InvalidInstructionData))?;
                 Self::UpdateEvidenceStats {
                     file_name: payload.file_name,

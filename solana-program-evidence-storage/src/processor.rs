@@ -128,8 +128,6 @@ pub fn update_evidence_info(
     file_name: String,
     description: String,
 ) -> ProgramResult {
-    msg!("Updating evidence review...");
-    msg!("Update evidence is : {}", file_name);
     msg!("update evidence({}) description to {}", file_name, description);
 
     // Get Account iterator

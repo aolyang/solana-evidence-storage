@@ -1,7 +1,7 @@
 import * as borsh from "@project-serum/borsh"
 import { Buffer } from "buffer"
 
-const EvidenceBorshSchema: borsh.Layout<IEvidence & { variant: 0 }> = borsh.struct([
+const EvidenceBorshSchema: borsh.Layout<IEvidence & { variant: 0 | 1 }> = borsh.struct([
     borsh.u8("variant"),
     borsh.str("file_name"),
     borsh.str("description"),
@@ -9,13 +9,6 @@ const EvidenceBorshSchema: borsh.Layout<IEvidence & { variant: 0 }> = borsh.stru
     borsh.str("hash")
 ])
 
-const UpdateEvidenceBorshSchema: borsh.Layout<Pick<IEvidence, "file_name" | "description"> & {
-    variant: 1
-}> = borsh.struct([
-    borsh.u8("variant"),
-    borsh.str("file_name"),
-    borsh.str("description")
-])
 const getEvidenceBorshSchema: borsh.Layout<IEvidence & { initialized: boolean }> = borsh.struct([
     borsh.bool("initialized"),
     borsh.str("file_name"),
@@ -49,13 +42,8 @@ class Evidence implements IEvidence {
                 buffer.slice(0, layout.getSpan(buffer))
             )
         }
-        if (variant === 0) {
-            EvidenceBorshSchema.encode({ variant, file_name, description, size, hash }, buffer)
-            return bufferSlice(buffer, EvidenceBorshSchema)
-        } else {
-            UpdateEvidenceBorshSchema.encode({ variant, file_name, description }, buffer)
-            return bufferSlice(buffer, getEvidenceBorshSchema)
-        }
+        EvidenceBorshSchema.encode({ variant, file_name, description, size, hash }, buffer)
+        return bufferSlice(buffer, EvidenceBorshSchema)
     }
 
     static deserialize(buffer?: Buffer): Evidence | null {

@@ -8,6 +8,7 @@ import { AddEvidenceDialog } from "@/components/add-evidence-dialog"
 import { IEvidence } from "@/definitions/instruction"
 import ProgramCoordinator from "@/utils/coordinator"
 import { rpcURL } from "@/definitions/program"
+import { UpdateEvidenceDialog } from "@/components/update-evidence-dialog"
 
 export function EvidencesList() {
     const [connection] = useState(
@@ -49,6 +50,8 @@ export function EvidencesList() {
         }
         // eslint-disable-next-line
     }, [connected])
+
+    const [evidence, setEvidence] = useState<IEvidence>()
     return (
         <div className={"w-full h-full"}>
             <div className={"flex gap-4 p-1"}>
@@ -60,11 +63,16 @@ export function EvidencesList() {
                 <ul className={"h-full overflow-y-auto"}>
                     {evidences.map((evidence, index) => {
                         return (
-                            <li key={evidence.hash + index} className={"border-secondary border-[1px] rounded-[4px] mb-2 p-1"}>
+                            <li key={evidence.hash + index}
+                                className={"border-secondary border-[1px] rounded-[4px] mb-2 p-1"}
+                                style={{ position: "relative" }}>
                                 <h1 className={"m-0 text-lg font-medium leading-tight text-neutral-800 dark:text-neutral-50"}>{evidence.file_name}</h1>
                                 <p>简介: {evidence.description}</p>
                                 <p>文件大小: {evidence.size}</p>
                                 <p>文件hash: {evidence.hash}</p>
+                                <div style={{ position: "absolute", right: "10px", top: "10px" }}>
+                                    <Button onClick={() => setEvidence(evidence)}>编辑</Button>
+                                </div>
                             </li>
                         )
                     })}
@@ -73,9 +81,8 @@ export function EvidencesList() {
                     {evidences.length === 0 && <li>no evidences found</li>}
                 </ul>
             </div>
-            <AddEvidenceDialog
-                open={show}
-                onClose={() => setShow(false)} />
+            <AddEvidenceDialog open={show} onClose={() => setShow(false)}/>
+            <UpdateEvidenceDialog evidence={evidence} onClose={() => setEvidence(undefined)}/>
         </div>
     )
 }
